@@ -1,0 +1,8 @@
+/restosearch/__pycache__/
+/restosearch/migrations/__pycache__/
+
+/searchengine/__pycache__/
+*.pyc
+__pycache__
+db.sqlite3
+.bash_profile

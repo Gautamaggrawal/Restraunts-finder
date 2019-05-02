@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h1>Restaurant GEO-Test</h1>
+
+<form method="post" action="./">
+    {% csrf_token %}
+    <table>
+        {{ form }}
+    </table>
+    <input type="submit" value="Search" />
+</form>
+
+{% if Restaurants %}
+<h2>Restaurants near you</h2>
+<ul>
+    {% for Restaurant in Restaurants %}
+    <li><b>{{ Restaurant.name }}</b>: distance: {{ Restaurant.distance }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyAz0lOpBpL_AwqSHDVfPepRpaBG9-4u5Jg"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+    	console.log("{{ latitude }}", "{{ longitude }}")
+        var latlng = new google.maps.LatLng("{{ latitude }}", "{{ longitude }}");
+
+        var mapOptions = {
+            zoom: 10,
+            center: latlng,
+            mapTypeControl: false,
+            navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map($('.map')[0], mapOptions);
+    
+        var marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+            title:"restraunts"
+        });
+        
+        {% for Restaurant in Restaurants %}
+            latlng = new google.maps.LatLng("{{ Restaurant.location.y }}", "{{ Restaurant.location.x }}");
+            new google.maps.Marker({
+                position: latlng,
+                map: map,
+                title:"{{ Restaurant.name }}"
+            });
+        {% endfor %}
+    });
+</script>
+<div class="map" style="width: 1000px; height: 800px;"></div>
+
+</body>
+</html>
