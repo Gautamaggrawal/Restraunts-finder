@@ -15,6 +15,7 @@ from django.conf import settings
 def geocode_address(address):
     address = address.encode('utf-8')
     search(address)
+
     print('sss',search(address))
     geocoder = GoogleV3(api_key=settings.GOOGLE_MAP_API_KEY)
     try:

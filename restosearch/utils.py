@@ -17,8 +17,8 @@ def search(QUERY):
 	# 	found=location['location_suggestions'][0]['title']
 	
 	# if QUERY!=found or location['has_total']==0:
-	# 	url='https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+{}&key=AIzaSyAz0lOpBpL_AwqSHDVfPepRpaBG9-4u5Jg'
-	# 	r=requests.get(url.format(QUERY))
+	# 	url='https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+{}&key={}'
+	# 	r=requests.get(url.format(QUERY,settings.GOOGLE_MAP_API_KEY))
 	# 	restos=r.json()['results']
 	# 	for i in restos:
 	# 		print(i['name'])
