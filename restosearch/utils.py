@@ -7,11 +7,12 @@ def search(QUERY):
 	HEADER = {'user-key': settings.ZOMATO_API_KEY}
 	r = requests.get(EP.format('categories'), headers=HEADER)
 	categories = r.json()
-	print(categories)
-	r = requests.get(EP.format('locations'), headers=HEADER, params={'query': QUERY})
+	# print(categories)
+	r = requests.get(EP.format('cities'), headers=HEADER, params={'q': QUERY})
+	# print(r)
 	location = r.json()
-	# print(location)
-	if location['location_suggestions'][0]['country_name'] == 'India':
+	print(location)
+	if len(location['location_suggestions'])!= 0:
 		# print(QUERY in location['location_suggestions'][0]['title'])
 		# print(location['location_suggestions'][0]['title'])
 		found=''
@@ -44,4 +45,4 @@ def search(QUERY):
 			print(i)
 
 
-search("Bina")
+search("Guna")
