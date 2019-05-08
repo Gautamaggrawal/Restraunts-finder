@@ -18,5 +18,6 @@ from django.urls import path
 from restosearch import views
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.home)
+    path('',views.trys),
+    path('searchresto/',views.search),
 ]

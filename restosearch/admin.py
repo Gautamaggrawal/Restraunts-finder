@@ -15,7 +15,7 @@ CUSTOM_MAP_SETTINGS = {
 class RestoAdminForm(forms.ModelForm):
     class Meta:
         model = Restaurant
-        fields = ("name", "location")
+        fields = ("name", "location","data","city")
         widgets = {
             'location': GooglePointFieldWidget(settings=CUSTOM_MAP_SETTINGS),
             }

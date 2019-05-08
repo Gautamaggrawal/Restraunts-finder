@@ -5,10 +5,14 @@ from django.contrib.gis import geos
 from django.db import models
 from geopy.geocoders.googlev3 import GoogleV3
 from geopy.geocoders.googlev3 import GeocoderQueryError
+from django.contrib.postgres.fields import JSONField
+
 # from geopy import geocoders
 
 
 class Restaurant(models.Model):
+    website=models.CharField(max_length=20,null=True)
+    data=JSONField(null=True)
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=100)
     city = models.CharField(max_length=50)
@@ -18,7 +22,7 @@ class Restaurant(models.Model):
     # gis = gis_models.GeoManager()
     objects = models.Manager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def save(self, **kwargs):
