@@ -1,7 +1,6 @@
 from urllib.error import URLError
 from django.contrib.gis import geos
 from django.contrib.gis import measure
-from django.shortcuts import render_to_response
 from django.contrib.gis.db.models.functions import Distance
 from django.template import RequestContext
 from geopy.geocoders.googlev3 import GoogleV3
@@ -11,7 +10,11 @@ from restosearch import models
 from django.shortcuts import render
 from .utils import GetRestos
 from django.conf import settings
-
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.gis.geos import Point
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 def geocode_address(address):
     address = address.encode('utf-8')
@@ -29,14 +32,17 @@ def geocode_address(address):
 def get_Restaurants(longitude, latitude,radius):
     current_point = geos.fromstr("POINT(%s %s)" % (longitude, latitude))
     distance_from_point = {'km': radius}
-    print(current_point)
-    Restaurants = models.Restaurant.objects.filter(
-        location__distance_lte=(current_point, measure.D(**distance_from_point)))
+    print(radius)
+    # Restaurants = models.Restaurant.objects.filter(
+    #     location__distance_lte=(current_point, measure.D(**distance_from_point)))
+    # geom = geos.fromstr('POINT(-73 40)')
+    Restaurants=models.Restaurant.objects.filter(location__distance_lte=(current_point, measure.D(m=radius))).distinct()
     # print(models.Restaurant.objects.annotate(distance=Distance("location", current_point)).order_by("distance")[0:6])
-    print(Restaurants.count())
+    print("ktnaaaaaaaa",Restaurants.count())
     # Restaurants = Restaurants[0].location.distance(current_point).order_by('distance')
     # return Restaurants[0].distance(current_point)
-    return models.Restaurant.objects.annotate(distance=Distance("location", current_point)).order_by("distance").values()
+    # return models.Restaurant.objects.annotate(distance=Distance("location", current_point)).order_by("distance")
+    return Restaurants
 
 
 def home(request):
@@ -57,10 +63,10 @@ def home(request):
 
 def trys(request):
     return render(request,'base.html')
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.gis.geos import Point
+from rest_framework.decorators import api_view
 
+
+ 
 @csrf_exempt
 def search(request):
     if request.method=='POST':
@@ -82,8 +88,32 @@ def search(request):
         point = Point(float(lng),float(lat))
         restos=get_Restaurants(float(lat),float(lng),radius)
         # restos = models.Restaurant.objects.filter(location__distance_lte=(point, measure.D(m=radius))).values()
-        # print("res",restos)
-        return JsonResponse({'data': "s"})
+        print("res",restos)
+        restos=list(restos.values('data','city','address').distinct())
+        # from django.core import serializers
+        # serialized_obj = serializers.serialize('json', restos )
+        return JsonResponse(restos,safe=False)
+
+class SearchRestosView(APIView):
+    def post(self,request):
+        print(request.data)
+        city=request.data.get("city")
+        start=request.data.get("start")
+        count=request.data.get("count")
+        if city is None:
+            return Response("CITY IS REQUIRED",status=400)
+        resto=models.Restaurant.objects.filter(city__icontains=city)
+        print("exists karta hai ya nahi",models.Restaurant.objects.filter(city__icontains=city).exists())
+        if resto.exists()==False:
+            data=GetRestos.searchapi(city,start,count)
+            return Response({"data":data},status=200)
+        else:
+            return Response({"data":restos[start:count]},status=200)
 
 
-        return render(request,'home.html',{'rest':restos})
+
+        
+
+
+
+

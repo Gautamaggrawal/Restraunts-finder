@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from restosearch import views
+from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.trys),
+    path('loc/',views.trys),
     path('searchresto/',views.search),
+    path('searchrestos/',views.SearchRestosView.as_view()),
+    path('', TemplateView.as_view(template_name='index.html'))
 ]
