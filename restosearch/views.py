@@ -100,6 +100,9 @@ class SearchRestosView(APIView):
         city=request.data.get("city")
         start=request.data.get("start")
         count=request.data.get("count")
+        if count==str(200):
+            return Response("Bro end")
+
         if city is None:
             return Response("CITY IS REQUIRED",status=400)
         resto=models.Restaurant.objects.filter(city__icontains=city)

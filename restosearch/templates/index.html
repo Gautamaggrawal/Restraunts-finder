@@ -32,7 +32,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="container">
+	<div class="container" id="mid-section">
 		<div>
 			<div class = "message col-md-12"></div>
 		</div>
@@ -84,7 +84,9 @@ $.ajaxSetup({
     }
 });
 
-	$(document).ready(function() {
+
+$(document).ready(function() {
+	const midSection = document.querySelector('#mid-section');
 
  $("#getMessage").on("click", function() {
   var valueSearchBox = $('#getText').val()
@@ -94,14 +96,15 @@ $.ajaxSetup({
   select();
  });
  //--------------------------------------------------SEARCH BY CITY-----------------------------------------
-
+let start = 0;
+let count = 10;
  function select() {
   var valueSearchBox = $('#getText').val()
 $.ajax({
     "type": "POST",
     "dataType": "json",
     "url": "/searchrestos/",
-    "data": {"city":valueSearchBox},
+    "data": {"city":valueSearchBox,"start":start,"count":count},
     "beforeSend": function(xhr, settings) {
         console.log("Before Send");
         $.ajaxSettings.beforeSend(xhr, settings);
@@ -117,6 +120,7 @@ $.ajax({
     $.each(x, function(index, value) {
      var location = x.restaurant.location;
      var userRating = x.restaurant.user_rating;
+
      html += "<div class='data img-rounded'>";
      html += "<div class='rating'>";
 
@@ -131,13 +135,28 @@ $.ajax({
      html += "  <strong>COST FOR TWO</strong>: " + value.currency + value.average_cost_for_two + "<br>";
      html += "</div><br>";
     });
+  
    });
+   midSection.insertAdjacentHTML('beforeend', html);
    $(".message").html(html);
   }
 });
+			start = count;
+			count += 10;
+
 
  }
  //--------------------------------------------------------------------------------------------------------
+ const scrollMe = document.querySelector('body');
+scrollMe.onscroll = function () {
+	if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10)
+ {
+		select();
+		console.log("ssssssssssss",start,count);
+	}
+}
+
+
  $("#select_id").change(function() {
   select();
  });

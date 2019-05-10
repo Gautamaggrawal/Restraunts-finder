@@ -58,7 +58,7 @@ class GetRestos:
 
     def searchapi(QUERY,start=0,count=20):
         EP = 'https://developers.zomato.com/api/v2.1/{}'  # endpoint for Zomato
-        HEADER = {'user-key': settings.ZOMATO_API_KEY}
+        HEADER = {'user-key': "c3d3366545336bba3bcec47786f44130"}
         r = requests.get(EP.format('categories'), headers=HEADER)
         categories = r.json()
         r = requests.get(EP.format('locations'),
@@ -66,6 +66,7 @@ class GetRestos:
         location = r.json()
         # print(location)
         lst = []
+        print(location)
        	l=location['location_suggestions'][0]
         param = {'entity_id': l['entity_id'],
                  'entity_type': l['entity_type'],"start":start,"count":count}
@@ -98,13 +99,13 @@ class GetRestos:
     # print(i)
     # else:
     # lst=[]
-# start=0
-# for i in range(20,101,20):
-# 	# print("sdcd",i)
-# 	x=GetRestos.searchapi("Gwalior",start,i)
-# 	print(x)
-# 	print(start,i)
-# 	start=i
+start=0
+for i in range(20,101,20):
+	# print("sdcd",i)
+	x=GetRestos.searchapi("Gwalior",start,i)
+	print(x)
+	print(start,i)
+	start=i
 
 
 # print(len(set(x)))
