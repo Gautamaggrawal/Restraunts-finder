@@ -99,13 +99,13 @@ class GetRestos:
     # print(i)
     # else:
     # lst=[]
-start=0
-for i in range(20,101,20):
-	# print("sdcd",i)
-	x=GetRestos.searchapi("Gwalior",start,i)
-	print(x)
-	print(start,i)
-	start=i
+# start=0
+# for i in range(20,101,20):
+# 	# print("sdcd",i)
+# 	x=GetRestos.searchapi("Gwalior",start,i)
+# 	print(x)
+# 	print(start,i)
+# 	start=i
 
 
 # print(len(set(x)))
