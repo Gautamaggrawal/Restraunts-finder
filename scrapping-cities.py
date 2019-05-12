@@ -6,8 +6,17 @@ content = response.content
 soup = BeautifulSoup(content,"html.parser")
 k=0
 
-for i in soup.find_all("h1",attrs={"class": "home-cnd-con-name mb5"}):
-	print('country'+i.text)
-	for j in soup.find_all("ul",attrs={"class": "tabs row home-cnd-tabs clearfix"}):
-		for k in j.find_all("h3",attrs={"class": "col-l-4 col-s-8 ellipsis"}):
-			print('cities'+k.text)
+# for i in soup.find_all("h1",attrs={"class": "home-cnd-con-name mb5"}):
+# 	print('country'+i.text)
+# 	for j in soup.find_all("ul",attrs={"class": "tabs row home-cnd-tabs clearfix"}):
+# 		for k in j.find_all("h3",attrs={"class": "col-l-4 col-s-8 ellipsis"}):
+# 			print('cities'+k.text)
+
+
+for i in soup.find_all("div",attrs={"class": "clearfix mbot0"}):
+	for j in i.find_all("div"):
+		print('country'+j.text)
+		for k in soup.find_all("ul",attrs={"class":"tabs row home-cnd-tabs clearfix"}):
+			for l in k.find_all("h3",attrs={"class":"col-l-4 col-s-8 ellipsis"}):
+				print("city"+l.text)
+					# print(l.text)
