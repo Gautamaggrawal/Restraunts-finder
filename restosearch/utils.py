@@ -77,18 +77,23 @@ class GetRestos:
         	loc=loc['restaurant']
         	pppp=populatedb.delay('zomato',loc, loc['name'], loc['location']['address'],loc['location']['city'], loc['location']['latitude'],loc['location']['longitude'])
         	print("db populated?",pppp)
+        # print(lst)        
         return lst
 
-    # def searchgoogleapi(QUERY):
-    # 	url='https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+{}&key={}'
-    # 	r=requests.get(url.format(QUERY,settings.GOOGLE_MAP_API_KEY))
-    # 	restos=r.json()['results']
-    # 	for i in restos:
-    # 		print(i)
-    # 		print(i['name'])
-    #  		print(i['formatted_address'])
-    #  		print(i['geometry']['location'])
-    
+    def searchgoogleapi(QUERY):
+        url='https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+{}&key={}'
+        r=requests.get(url.format(QUERY,'AIzaSyAz0lOpBpL_AwqSHDVfPepRpaBG9-4u5Jg'))
+        # print(r.json())
+        lst=[]
+        restos=r.json()['results']
+        # print(restos)
+        lst.append(restos)
+        for i in restos:
+            print(i)
+            print(i['name'])
+            print(i['formatted_address'])
+            print(i['geometry']['location'])
+        return lst 
 
 
 

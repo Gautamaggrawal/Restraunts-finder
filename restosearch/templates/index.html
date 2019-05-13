@@ -86,9 +86,11 @@ $.ajaxSetup({
 
 
 $(document).ready(function() {
+  $('#mid-section').empty();
 	const midSection = document.querySelector('#mid-section');
 
  $("#getMessage").on("click", function() {
+
   var valueSearchBox = $('#getText').val()
   if (valueSearchBox === "") {
    return;
@@ -110,14 +112,18 @@ $.ajax({
         $.ajaxSettings.beforeSend(xhr, settings);
     },
     "success": function(data) {
-        data=data['data'][0];
-        console.log(data)
-   data = data.restaurants;
-   var html = "";
+        flag=data['flag'];
+        if(flag=="zom")
+        {
+          data=data['data'][0];
+          console.log('zom wala',data)
+          data=data.restaurants;
+             var html = "";
 
    $.each(data, function(index, value) {
 
     var x = data[index];
+    console.log('zom',x);
     $.each(x, function(index, value) {
      var location = x.restaurant.location;
      var userRating = x.restaurant.user_rating;
@@ -139,6 +145,46 @@ $.ajax({
   
    });
    midSection.insertAdjacentHTML('beforeend', html);
+
+
+        }
+        if(flag=="google")
+        {
+          data=data['data'][0];
+          console.log('google wala',data);
+
+
+          var html = "";
+
+   $.each(data, function(index, value) {
+    // var x = data[index];
+    // console.log(index,value);
+
+    // $.each(data, function(index, value) {
+     // var location = x.restaurant.location;
+     // var userRating = x.restaurant.user_rating;
+
+     html += "<div class='data img-rounded'>";
+     html += "<div class='rating'>";
+
+     html += "<span title='" + value.rating + "'><p style='color:white;background-color:green"+";border-radius:4px;border:none;padding:2px 10px 2px 10px;text-align: center;text-decoration:none;display:inline-block;font-size:16px;float:right;'><strong>" + value.rating + "</strong></p></span><br>";
+     html += "  <strong class='text-info'>" + value.user_ratings_total + " votes</strong>";
+     html += "</div>";
+     html += "<img class='resimg img-rounded' src=" + value.icon + " alt='Restaurant Image' height='150' width='150'>";
+     html += "<a href=" + '#' + " target='_blank' class='action_link'><h2 style='color:red;'><strong>" + value.name + "</strong></h2></a>";
+     html += "  <strong class='text-primary'>" + value.plus_code.compound_code.slice(7) + "</strong><br>";
+     html += "  <h6 style='color:grey;'><strong>" + value.formatted_address.slice(0,value.formatted_address.indexOf('Guna')) + "</strong></h6><hr>";
+     html += "</div><br>";
+    // });
+  
+   });
+
+       }
+
+   
+   console.log('final',data)
+
+   
    $(".message").html(html);
   }
 });

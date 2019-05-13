@@ -114,13 +114,18 @@ class SearchRestosView(APIView):
         if resto.exists()==False:
             print(Validate.Zomotocity())
             if Validate.Zomotocity(city,country)==True:
+                flag='zom'
                 print("asdfedsaz")
                 data=GetRestos.searchzomapi(city,start,count)
+
+                # print(data)
             else:
-                pass
-                # data=GetRestos.searchgoogleapi(city)
-            print(data)
-            return Response({"data":data},status=200)            
+                # print(city)
+                flag='google'
+                data=GetRestos.searchgoogleapi(city)
+                print(data)
+            # print(data)
+            return Response({"data":data,"flag":flag},status=200)            
         else:
             print(resto[int(start):int(count)].count())
             data=list(resto[int(start):int(count)].values('data'))
