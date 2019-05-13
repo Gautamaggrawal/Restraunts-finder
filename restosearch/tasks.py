@@ -7,11 +7,11 @@ logger = get_task_logger(__name__)
 
 
 @task(name="populatedb")
-def populatedb(apidata,apiname,apiaddress,apicity,lat,lng):
+def populatedb(website,apidata,apiname,apiaddress,apicity,lat,lng):
 	# print(lat,lng)
 	loc=Point(float(lat),float(lng))
 	if Restaurant.objects.filter(location__coveredby=loc).exists()==False:
-		restos=Restaurant.objects.create(data=apidata,name=apiname,address=apiaddress,city=apicity,location=loc)
+		restos=Restaurant.objects.create(website=website,data=apidata,name=apiname,address=apiaddress,city=apicity,location=loc)
 		# logger.info("created")
 		restos.save()
 	logger.info("created")
