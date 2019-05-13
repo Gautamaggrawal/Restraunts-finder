@@ -79,15 +79,15 @@ class GetRestos:
         	print("db populated?",pppp)
         return lst
 
-    def searchgoogleapi(QUERY):
-    	url='https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+{}&key={}'
-    	r=requests.get(url.format(QUERY,settings.GOOGLE_MAP_API_KEY))
-    	restos=r.json()['results']
-    	for i in restos:
-    		print(i)
-    		print(i['name'])
-     		print(i['formatted_address'])
-     		print(i['geometry']['location'])
+    # def searchgoogleapi(QUERY):
+    # 	url='https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+{}&key={}'
+    # 	r=requests.get(url.format(QUERY,settings.GOOGLE_MAP_API_KEY))
+    # 	restos=r.json()['results']
+    # 	for i in restos:
+    # 		print(i)
+    # 		print(i['name'])
+    #  		print(i['formatted_address'])
+    #  		print(i['geometry']['location'])
     
 
 

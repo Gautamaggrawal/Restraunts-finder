@@ -11,17 +11,29 @@ class Validate:
             return False
 
 
-# from bs4 import BeautifulSoup
-# import requests
-# headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
-# response = k=requests.get("https://www.zomato.com/cities",headers=headers)
-# content = response.content
-# soup = BeautifulSoup(content,"html.parser")
-# k=0
+from bs4 import BeautifulSoup
+import requests
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'}
+response = k=requests.get("https://www.zomato.com/cities",headers=headers)
+content = response.content
+soup = BeautifulSoup(content,"html.parser")
+k=0
 
-# for i in soup.find_all("h1",attrs={"class": "home-cnd-con-name mb5"}):
-# 	cntry=ZomatoCountry.objects.create(country=i.text.strip())
-# 	print("country gayiiiiiiii")
-# 	for j in soup.find_all("ul",attrs={"class": "tabs row home-cnd-tabs clearfix"}):
-# 		for k in j.find_all("h3",attrs={"class": "col-l-4 col-s-8 ellipsis"}):
-# 			ZomatoCity.objects.create(country=cntry,city=k.text.strip())
+for i in soup.find_all("div",attrs={"class": "selected"}):
+	for j in i.find_all("h1",attrs={"class":"home-cnd-con-name mb5"}):
+		print(j.text)
+		cntry=ZomatoCountry.objects.create(country=j.text.strip())
+		for k in i.findNextSibling():
+			print(k.text)
+			ZomatoCity.objects.create(country=cntry,city=k.text.strip())				
+
+
+
+
+# for i in soup.find_all("div",attrs={"class": "clearfix mbot0"}):
+# 	for j in i.find_all("div"):
+# 		print('country'+j.text)	
+# 		for k in soup.find_all("ul",attrs={"class":"tabs row home-cnd-tabs clearfix"}):
+# 			for l in k.find_all("h1",attrs={"class":"col-l-4 col-s-8 ellipsis"}):
+# 				print(l.text)
+
