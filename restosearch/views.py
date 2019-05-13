@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.gis.geos import Point
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from restosearch.validators import *
 
 def geocode_address(address):
     address = address.encode('utf-8')
@@ -100,18 +101,31 @@ class SearchRestosView(APIView):
         city=request.data.get("city")
         start=request.data.get("start")
         count=request.data.get("count")
-        if count==str(200):
-            return Response("Bro end")
-
+        
         if city is None:
-            return Response("CITY IS REQUIRED",status=400)
+            return Response("CITY IS REQUIRED",status=400)        
+        
+        complete_city_addr=city.split(',')
+        city=complete_city_addr[0].strip()
+        country=complete_city_addr[len(complete_city_addr)-1].strip()
+
         resto=models.Restaurant.objects.filter(city__icontains=city)
         print("exists karta hai ya nahi",models.Restaurant.objects.filter(city__icontains=city).exists())
         if resto.exists()==False:
-            data=GetRestos.searchapi(city,start,count)
-            return Response({"data":data},status=200)
+            print(Validate.Zomotocity())
+            if Validate.Zomotocity(city,country)==True:
+                print("asdfedsaz")
+                data=GetRestos.searchzomapi(city,start,count)
+            else:
+                pass
+                # data=GetRestos.searchgoogleapi(city)
+            print(data)
+            return Response({"data":data},status=200)            
         else:
-            return Response({"data":restos[start:count]},status=200)
+            print(resto[int(start):int(count)].count())
+            data=list(resto[int(start):int(count)].values('data'))
+            print(data)
+            return Response({"data":data},status=200)
 
 
 

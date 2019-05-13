@@ -8,7 +8,16 @@ from geopy.geocoders.googlev3 import GeocoderQueryError
 from django.contrib.postgres.fields import JSONField
 
 # from geopy import geocoders
+class ZomatoCountry(models.Model):
+    country=models.CharField(max_length=50)
+    def __str__(self):
+        return self.country    
 
+class ZomatoCity(models.Model):
+    country=models.ForeignKey(ZomatoCountry,on_delete=models.CASCADE)
+    city=models.CharField(max_length=50)
+    def __str__(self):
+        return self.city
 
 class Restaurant(models.Model):
     website=models.CharField(max_length=20,null=True)

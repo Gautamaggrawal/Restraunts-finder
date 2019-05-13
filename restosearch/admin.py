@@ -29,3 +29,5 @@ class RestoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Restaurant, RestoAdmin)
+admin.site.register(ZomatoCountry)
+admin.site.register(ZomatoCity)
