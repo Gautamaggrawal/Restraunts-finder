@@ -2,44 +2,76 @@
 {% load staticfiles%}
 <html>
 <head>
-	<link rel="stylesheet" href='{% static "css/index.css" %}'>
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-	<script type="text/javascript" src='https://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyAz0lOpBpL_AwqSHDVfPepRpaBG9-4u5Jg'>
-	</script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-	
+  <link rel="stylesheet" href='{% static "css/index.css" %}'>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script type="text/javascript" src='https://maps.google.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyAz0lOpBpL_AwqSHDVfPepRpaBG9-4u5Jg'>
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 
-	<title></title>
+  <title></title>
 </head>
 <body>
        
 <div class="jumbotron jumbotron-billboard text-center">
-	<div class="img"></div>
-	<div class="container pt">
-		<div class="text-center">
-			
-		</div>
-		<div class="mt-5 text-color">
-			<h1>Find the best Restaurants</h1>
-		</div>
-		<div class="row mx-auto well col-lg-12 mt-5">
-			<div class="col-xs-10 pl-0 pr-0">
-				<input id="getText" type="text" class="form-control" placeholder="Enter city name...">
-				</div>
-				<button id = "getMessage" class = "btn btn-success col-xs-2">Search</button>
-			</div>
-		</div>
-	</div>
-	<div class="container" id="mid-section">
-		<div>
-			<div class = "message col-md-12"></div>
-		</div>
-	</div>
-	<hr>
+  <div class="img"></div>
+  <div class="container pt">
+    <div class="text-center">
+      
+    </div>
+    <div class="mt-5 text-color">
+      <h1>Find the best Restaurants</h1>
+    </div>
+    <div class="row mx-auto well col-lg-12 mt-5">
+      <div class="col-xs-10 pl-0 pr-0">
+        <input id="getText" type="text" class="form-control" placeholder="Enter city name...">
+        </div>
+        <button id = "getMessage" class = "btn btn-success col-xs-2">Search</button>
+      </div>
+    </div>
+  </div>
+<div class="container">
+  
+  <!-- Trigger the modal with a button -->
+<!--   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+ -->
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+          <p>Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>
+
+
+
+  <div class="container" id="mid-section">
+    <div>
+      <div class = "message col-md-12"></div>
+    </div>
+  </div>
+  <hr>
 <script type="text/javascript">
-	      window.onload = function () {
+        window.onload = function () {
         console.log('window loaded')
         var input = document.getElementById('getText');
         var options = {
@@ -59,7 +91,7 @@
       }
 </script>
 <script type="text/javascript">
-	function getCookie(name) {
+  function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
         var cookies = document.cookie.split(';');
@@ -86,9 +118,12 @@ $.ajaxSetup({
 
 
 $(document).ready(function() {
+  let start = 0;
+let count = 10;
+  // var html = "";
 
-	const midSection = document.querySelector('#mid-section');
-
+  // $('#mid-section').empty();
+  const midSection = document.querySelector('#mid-section');
  $("#getMessage").on("click", function() {
 
   var valueSearchBox = $('#getText').val()
@@ -98,8 +133,7 @@ $(document).ready(function() {
   select();
  });
  //--------------------------------------------------SEARCH BY CITY-----------------------------------------
-let start = 0;
-let count = 10;
+
  function select() {
   var valueSearchBox = $('#getText').val()
 $.ajax({
@@ -115,18 +149,35 @@ $.ajax({
         flag=data['flag'];
         if(flag=="zom")
         {
-          data=data['data'][0];
-          console.log('zom wala',data)
-          data=data.restaurants;
-        var html = "";
+
+          const db=data['db']
+          console.log(db==1)  
+          if(db==1){
+          data=data['data'];}
+          else{
+            data=data['data'][0];
+            data=data.restaurants;
+          }
+            var html = "";
+          
+          console.log("sadfasd",db)
 
    $.each(data, function(index, value) {
-
-    var x = data[index];
-    console.log('zom',x);
+    if (db==1){var x = data;}
+    else{var x = data[index];}
     $.each(x, function(index, value) {
-     var location = x.restaurant.location;
+      if(db==1)
+      {
+      value=value.data
+     var location = value.location;
+     var userRating =value.user_rating;
+      }
+      else{
+      var location = x.restaurant.location;
      var userRating = x.restaurant.user_rating;
+      }
+     
+     $(".modal-title").html(value.name);
 
      html += "<div class='data img-rounded'>";
      html += "<div class='rating'>";
@@ -135,7 +186,8 @@ $.ajax({
      html += "  <strong class='text-info'>" + userRating.votes + " votes</strong>";
      html += "</div>";
      html += "<img class='resimg img-rounded' src=" + value.thumb + " alt='Restaurant Image' height='185' width='185'>";
-     html += "<a href=" + value.url + " target='_blank' class='action_link'><h2 style='color:red;'><strong>" + value.name + "</strong></h2></a>";
+     // html+="<button type='button' data-toggle='modal' data-target='#myModal'>Open Modal</button>"
+     html += "<a type='button' data-toggle='modal' data-target='#myModal'><h2 style='color:red;'><strong>" + value.name + "</strong></h2></a>";
      html += "  <strong class='text-primary'>" + location.locality + "</strong><br>";
      html += "  <h6 style='color:grey;'><strong>" + location.address + "</strong></h6><hr>";
      html += "  <strong>CUISINES</strong>: " + value.cuisines + "<br>";
@@ -145,26 +197,17 @@ $.ajax({
   
    });
    midSection.insertAdjacentHTML('beforeend', html);
+}
 
-
-        }
         if(flag=="google")
         {
           data=data['data'][0];
           console.log('google wala',data);
 
-
           var html = "";
 
    $.each(data, function(index, value) {
-    // var x = data[index];
-    // console.log(index,value);
-
-    // $.each(data, function(index, value) {
-     // var location = x.restaurant.location;
-     // var userRating = x.restaurant.user_rating;
-     var input = document.getElementById('getText').value
-     var inp=input.split(',')[0]
+    console.log(index,value)
      html += "<div class='data img-rounded'>";
      html += "<div class='rating'>";
 
@@ -173,12 +216,15 @@ $.ajax({
      html += "</div>";
      html += "<img class='resimg img-rounded' src=" + value.icon + " alt='Restaurant Image' height='150' width='150'>";
      html += "<a href=" + '#' + " target='_blank' class='action_link'><h2 style='color:red;'><strong>" + value.name + "</strong></h2></a>";
+
      html += "  <strong class='text-primary'>" + value.plus_code.compound_code.slice(7) + "</strong><br>";
      html += "  <h6 style='color:grey;'><strong>" + value.formatted_address.slice(0,value.formatted_address.indexOf(inp)) + "</strong></h6><hr>";
      html += "</div><br>";
     // });
+
   
    });
+   $(".message").html(html);
 
        }
 
@@ -189,19 +235,19 @@ $.ajax({
    $(".message").html(html);
   }
 });
-			start = count;
-			count += 10;
+      start = count;
+      count += 10;
 
 
  }
  //--------------------------------------------------------------------------------------------------------
  const scrollMe = document.querySelector('body');
 scrollMe.onscroll = function () {
-	if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10)
+  if ($(window).scrollTop() >= $(document).height() - $(window).height() - 10)
  {
-		select();
-		console.log("ssssssssssss",start,count);
-	}
+    select();
+    console.log("ssssssssssss",start,count);
+  }
 }
 
 

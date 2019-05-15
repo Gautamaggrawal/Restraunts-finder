@@ -109,28 +109,53 @@ class SearchRestosView(APIView):
         city=complete_city_addr[0].strip()
         country=complete_city_addr[len(complete_city_addr)-1].strip()
 
-        resto=models.Restaurant.objects.filter(city__icontains=city)
-        print("exists karta hai ya nahi",models.Restaurant.objects.filter(city__icontains=city).exists())
-        if resto.exists()==False:
-            print(Validate.Zomotocity())
-            if Validate.Zomotocity(city,country)==True:
-                flag='zom'
-                print("asdfedsaz")
-                data=GetRestos.searchzomapi(city,start,count)
-
-                # print(data)
+        if Validate.Zomotocity(city,country)==True:
+            flag="zom"
+            zomatorestos=models.Restaurant.objects.filter(city__icontains=city,website="zomato")
+            if zomatorestos.exists() and zomatorestos.count()>=99:
+                data=list(zomatorestos[int(start):int(count)].values('data'))
+                return Response({"data":data,"flag":flag,"db":1},status=200)
             else:
-                # print(city)
-                flag='google'
-                data=GetRestos.searchgoogleapi(city)
-                # print(data)
-            # print(data)
-            return Response({"data":data,"flag":flag},status=200)            
+                data=GetRestos.searchzomapi(city,start,count)
         else:
-            print(resto[int(start):int(count)].count())
-            data=list(resto[int(start):int(count)].values('data'))
-            print(data)
-            return Response({"data":data},status=200)
+            flag="google"
+            googlerestos=models.Restaurant.objects.filter(city__icontains=city,website="google")
+            print("hai")
+            if googlerestos.exists():
+                data=list(googlerestos.values('data'))
+            else:
+                data=GetRestos.searchgoogleapi(city)
+        print(flag)
+        return Response({"data":data,"flag":flag,"db":0},status=200)
+
+
+
+
+
+
+
+
+
+        # resto=models.Restaurant.objects.filter(city__icontains=city)
+        # print("exists karta hai ya nahi",models.Restaurant.objects.filter(city__icontains=city).exists())
+        # if resto.exists()==False or resto.count()<=99:
+        #     print(Validate.Zomotocity())
+        #     if Validate.Zomotocity(city,country)==True:
+        #         flag='zom'
+        #         data=GetRestos.searchzomapi(city,start,count)
+        #     else:
+        #         flag='google'
+        #         data=GetRestos.searchgoogleapi(city)
+                        
+        # else:
+        #     print(resto[int(start):int(count)].count())
+        #     if resto.first().website=="zomato":
+                
+        #         return Response({"data":data,"flag":'zom'},status=200)
+        #     else:
+                
+        #         return Response({"data":data,"flag":"google"},status=200)
+
 
 
 

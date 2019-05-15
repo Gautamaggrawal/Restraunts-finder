@@ -24,7 +24,7 @@ class Restaurant(models.Model):
     data=JSONField(null=True)
     name = models.CharField(max_length=200)
     address = models.CharField(max_length=1000)
-    city = models.CharField(max_length=500)
+    city = models.CharField(max_length=500,null=True)
     location = gis_models.PointField(u"longitude/latitude",
                                      geography=True, blank=True, null=True)
 
