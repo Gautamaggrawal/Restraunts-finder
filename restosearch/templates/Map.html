@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+	   <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+	<title></title>
+
+</head>
+<body>
+
+	<div class="container-fluid">
+  <center><h1>Restraunts Locator</h1>
+  <p>The following example will result in a 25%/75% split on small devices, a 50%/50% split on medium devices, and a 33%/66% split on large devices. On extra small devices, it will automatically stack (100%).</p>
+  <p>Resize the browser window to see the effect.</p>
+  <div class="row">
+    <div class="col-sm-3 col-md-6 col-lg-4">
+      <div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">List group item heading</h5>
+      <small>3 days ago</small>
+    </div>
+    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+    <small>Donec id elit non mi porta.</small>
+  </a>
+  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">List group item heading</h5>
+      <small class="text-muted">3 days ago</small>
+    </div>
+    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+    <small class="text-muted">Donec id elit non mi porta.</small>
+  </a>
+  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">List group item heading</h5>
+      <small class="text-muted">3 days ago</small>
+    </div>
+    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+    <small class="text-muted">Donec id elit non mi porta.</small>
+  </a>
+</div>
+    </div>
+    <div class="col-sm-9 col-md-6 col-lg-8">
+<div id="googleMap" style="height:100%;width:100%"></div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAz0lOpBpL_AwqSHDVfPepRpaBG9-4u5Jg"></script>
+
+<script type="text/javascript">
+	var schools = [
+  ['sadfghj', 25.091225, 121.470677, 7],
+  ['asdfghj', 25.042971, 121.467114, 5],
+  ['chirayu ki maa ki ', 25.187315, 121.454549, 3],
+  ['c', 25.107698, 121.805046, 2],
+  ['h', 25.042856, 121.524409, 1],
+  ['o', 25.024435, 121.538972, 6]
+];
+
+var map = new google.maps.Map(document.getElementById('googleMap'), {
+  zoom: 11,
+  center: new google.maps.LatLng(25.08, 121.6),
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+});
+
+var infowindow = new google.maps.InfoWindow();
+
+var marker, i;
+var markers = [];
+
+for (i = 0; i < schools.length; i++) {  
+  marker = new google.maps.Marker({
+    position: new google.maps.LatLng(schools[i][1], schools[i][2]),
+    map: map
+  });
+
+  markers.push(marker);
+
+  google.maps.event.addListener(marker, 'mouseover', (function(marker, i) {
+    return function() {
+      infowindow.setContent(schools[i][0]);
+      infowindow.open(map, marker);
+    }
+  })(marker, i));
+}
+
+// source from https://jsfiddle.net/6tyavn93/
+</script>
+</body>
+</html>

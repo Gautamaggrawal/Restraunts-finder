@@ -86,7 +86,7 @@ $.ajaxSetup({
 
 
 $(document).ready(function() {
-  $('#mid-section').empty();
+
 	const midSection = document.querySelector('#mid-section');
 
  $("#getMessage").on("click", function() {
@@ -118,7 +118,7 @@ $.ajax({
           data=data['data'][0];
           console.log('zom wala',data)
           data=data.restaurants;
-             var html = "";
+        var html = "";
 
    $.each(data, function(index, value) {
 
@@ -163,7 +163,8 @@ $.ajax({
     // $.each(data, function(index, value) {
      // var location = x.restaurant.location;
      // var userRating = x.restaurant.user_rating;
-
+     var input = document.getElementById('getText').value
+     var inp=input.split(',')[0]
      html += "<div class='data img-rounded'>";
      html += "<div class='rating'>";
 
@@ -173,7 +174,7 @@ $.ajax({
      html += "<img class='resimg img-rounded' src=" + value.icon + " alt='Restaurant Image' height='150' width='150'>";
      html += "<a href=" + '#' + " target='_blank' class='action_link'><h2 style='color:red;'><strong>" + value.name + "</strong></h2></a>";
      html += "  <strong class='text-primary'>" + value.plus_code.compound_code.slice(7) + "</strong><br>";
-     html += "  <h6 style='color:grey;'><strong>" + value.formatted_address.slice(0,value.formatted_address.indexOf('Guna')) + "</strong></h6><hr>";
+     html += "  <h6 style='color:grey;'><strong>" + value.formatted_address.slice(0,value.formatted_address.indexOf(inp)) + "</strong></h6><hr>";
      html += "</div><br>";
     // });
   

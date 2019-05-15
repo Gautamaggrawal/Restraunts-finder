@@ -89,9 +89,9 @@ class GetRestos:
         # print(restos)
         lst.append(restos)
         for i in restos:
-            print(i)
-            print(i['name'])
-            print(i['formatted_address'])
+            # print(i)
+            # print(i['name'])
+            # print(i['formatted_address'])
             print(i['geometry']['location'])
         return lst 
 
