@@ -10,7 +10,7 @@ from restosearch import models
 from django.shortcuts import render
 from .utils import GetRestos
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.gis.geos import Point
 from rest_framework.response import Response
@@ -64,36 +64,61 @@ def home(request):
 
 def trys(request):
     return render(request,'base.html')
-from rest_framework.decorators import api_view
+# from rest_framework.decorators import api_view
 
 
- 
+from django import template
+from django.template.loader import get_template 
+from django.template import Context, Template
+from django.template.loader import render_to_string
+
 @csrf_exempt
 def search(request):
+    print(request.method)
     if request.method=='POST':
         print(request.POST)
-        lat = request.POST.getlist('lat')
-        lng = request.POST.getlist('lng')
-        radius = request.POST.getlist('radius')
+        lat = request.POST.getlist('user_lat')
+        lng = request.POST.getlist('user_long')
+        radius = request.POST.getlist('user_radius')
         city = request.POST.getlist('city')
-        print("dewdwedewdew",lat,lng)
-        print("dewd",city)
-        city=lng[2].split(",")[0]
-        print(city)
+
+        complete_city_addr=city[0].split(',')
+        city=complete_city_addr[0].strip()
+        country=complete_city_addr[len(complete_city_addr)-1].strip()
+        # print(city,country)
+
         print("exists karta hai ya nahi",models.Restaurant.objects.filter(city__icontains=city).exists())
+
         if models.Restaurant.objects.filter(city__icontains=city).exists()==False:
-            GetRestos.searchapi(lng[2])
-        radius=float(lng[1])
+            if Validate.Zomotocity(city,country)==True:
+                GetRestos.searchzomapi(city)
+            else:
+                GetRestos.searchgoogleapi(city)
+
+        radius=float(radius[0])
         lat,lng=lat[0],lng[0]
 
         point = Point(float(lng),float(lat))
         restos=get_Restaurants(float(lat),float(lng),radius)
         # restos = models.Restaurant.objects.filter(location__distance_lte=(point, measure.D(m=radius))).values()
-        print("res",restos)
-        restos=list(restos.values('data','city','address').distinct())
-        # from django.core import serializers
-        # serialized_obj = serializers.serialize('json', restos )
-        return JsonResponse(restos,safe=False)
+        # print("res",restos)
+
+        restos_details=list(restos.values("name",'data','address'))
+
+        lst=[]
+        for i in restos:
+            if i.website=="zomato":
+                rating=i.data.get("user_rating")['aggregate_rating']
+            if i.website=="googlemaps":
+                # print(i.data)
+                rating=i.data.get("rating")
+            lst.append({"rating":rating,"address":i.address,"name":i.name,"latitude":i.location.x,"longitude":i.location.y})
+
+        return render(request,'Map.html',{ 'upload_response': lst,"details":restos_details,"lat":lat,"lon":lng,"city":city,"radius":radius})
+
+
+def maos(request):
+    return render(request,"Map.html")
 
 class SearchRestosView(APIView):
     def post(self,request):

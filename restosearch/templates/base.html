@@ -42,7 +42,8 @@
         }
                           );
       }
-      function showMap(latitude, longitude, radius) {
+      function showMap(latitude, longitude, radius,city) {
+        console.log("showMap",city)
         $('#us3').locationpicker({
           location: {
             latitude: latitude,
@@ -55,16 +56,28 @@
           enableAutocomplete: true,
           onchanged: function (currentLocation, radius, isMarkerDropped) {
             console.log("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
+            if (currentLocation.latitude== null || currentLocation.longitude== null){
+              currentLocation.latitude=28.6562
+              currentLocation.longitude=77.2410
+            }
             user_lat.value = currentLocation.latitude;
             user_long.value = currentLocation.longitude;
+            city="muzaffarnagar";
           }
         }
                                 );
+      }
+      function cityup(){
+        
+        document.getElementById("city").value = document.getElementById("pac-input").value;
+
       }
       function refreshMap() {
         let lat = parseFloat(user_lat.value);
         let long = parseFloat(user_long.value);
         let radius = user_radius.value;
+        // let city=city.value;
+        // console.log("refreesh city",city);
         showMap(lat,long,radius);
       }
       window.onload = function () {
@@ -92,7 +105,8 @@
             return;
           }
           let radius = user_radius.value;
-          showMap(place.geometry.location.lat(),place.geometry.location.lng(), radius);
+          console.log(input.value)
+          showMap(place.geometry.location.lat(),place.geometry.location.lng(), radius,input.value);
         }
                                 );
       }
@@ -109,11 +123,13 @@
           <div class="feedback alert alert-danger text-center text-capitalize">please enter city
           </div>
           <div class="input-group">
-            <input type="text" class="form-control text-capitalize" id="pac-input" placeholder="enter city....">
+            <input type="text" class="form-control text-capitalize" id="pac-input" placeholder="enter city...." onchange="cityup()">
             <div class="input-group-append">
             </div>
           </div>
-          <form id="restofindform" method="POST">
+          <form id="restofindform" method="POST" action="/searchresto/">
+            <input type="text" id="city" name="city" placeholder="enter city...." style="display: none" />
+
             <input id="user_lat" type="text" name="user_lat" placeholder="28.6562" style="display: none" />
             <input id="user_long" type="text" name="user_long" placeholder="77.2410" style="display: none" />
             <div style="width:200px; padding: 10px;">
@@ -123,6 +139,7 @@
                 <input class="mdl-slider mdl-js-slider" id="user_radius" type="range" name="user_radius" min="100" max="5000" value="100"  onchange="refreshMap()" />
               </label>
             </div>
+
             <button type="submit" class="btn btn-info">Search
             </button>
             {% csrf_token %}
@@ -151,35 +168,40 @@
             }
             return cookieValue;
           }
-          $(document).on('submit',"#restofindform",function(e){
-            e.preventDefault();
-            csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-            lat=document.getElementById("user_lat").value
-            lng=document.getElementById("user_long").value
-            radius=document.getElementById("user_radius").value
-            city=document.getElementById("pac-input").value
-            console.log(e)
-            let data = new FormData();
-            data.append('lat', lat);;
-            data.append('lng', lng);
-            data.append('lng', radius);
-            data.append('lng', city);
-            fetch("/searchresto/", {
-              method: 'POST',
-              body: data,
-              credentials: 'same-origin',
-            }
-                 ).then(function(response) {
-              return response.json();
-            }
-                       ).then(function(data) {
-              console.log("Data is ok", data);
-              alert("asdf");
-            }
-                             )
-            console.log(e)
-          }
-                        );
+          // $(document).on('submit',"#restofindform",function(e){
+          //   e.preventDefault();
+          //   csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+          //   lat=document.getElementById("user_lat").value
+          //   lng=document.getElementById("user_long").value
+          //   radius=document.getElementById("user_radius").value
+          //   city=document.getElementById("pac-input").value
+          //   console.log(e)
+          //   let data = new FormData();
+          //   data.append('lat', lat);;
+          //   data.append('lng', lng);
+          //   data.append('lng', radius);
+          //   data.append('lng', city);
+          //   fetch("/searchresto/", {
+          //     method: 'POST',
+          //     body: data,
+          //     credentials: 'same-origin',
+          //   }
+          //        ).then(function(response) {
+          //         console.log(response)
+          //         // $("html").html(response);
+          //         // $("html").html(response)
+          //     return response.json();
+          //   }
+          //              ).then(function(data) {
+          //               $("html").html("")
+          //               $("head").html("")
+          //               $("html").html(data)
+          //     console.log("Data is ok", data);
+          //   }
+          //                    )
+          //   console.log(e)
+          // }
+          //               );
         </script>
         </body>
       </html>

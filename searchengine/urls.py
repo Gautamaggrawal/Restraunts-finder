@@ -22,5 +22,6 @@ urlpatterns = [
     path('loc/',views.trys),
     path('searchresto/',views.search),
     path('searchrestos/',views.SearchRestosView.as_view()),
+    path('map/',views.maos),
     path('', TemplateView.as_view(template_name='index.html'))
 ]

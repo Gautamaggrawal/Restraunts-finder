@@ -135,6 +135,8 @@ let count = 10;
  //--------------------------------------------------SEARCH BY CITY-----------------------------------------
 
  function select() {
+
+
   var valueSearchBox = $('#getText').val()
 $.ajax({
     "type": "POST",
@@ -204,7 +206,7 @@ $.ajax({
           data=data['data'][0];
           console.log('google wala',data);
 
-          var html = "";
+          var html = " ";
 
    $.each(data, function(index, value) {
     console.log(index,value)
@@ -218,10 +220,10 @@ $.ajax({
      html += "<a href=" + '#' + " target='_blank' class='action_link'><h2 style='color:red;'><strong>" + value.name + "</strong></h2></a>";
 
      html += "  <strong class='text-primary'>" + value.plus_code.compound_code.slice(7) + "</strong><br>";
-     html += "  <h6 style='color:grey;'><strong>" + value.formatted_address.slice(0,value.formatted_address.indexOf(inp)) + "</strong></h6><hr>";
+     html += "  <h6 style='color:grey;'><strong>" + value.formatted_address + "</strong></h6><hr>";
      html += "</div><br>";
     // });
-
+//.slice(0,value.formatted_address.indexOf(inp))
   
    });
    $(".message").html(html);

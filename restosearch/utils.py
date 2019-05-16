@@ -1,6 +1,7 @@
 import requests
 from django.conf import settings
 from restosearch.tasks import populatedb
+from celery.result import AsyncResult
 
 
 class GetRestos:
@@ -35,6 +36,7 @@ class GetRestos:
         lst=[]
         restos=r.json()['results']
         # print(restos)
+        print(restos)
         lst.append(restos)
         for i in restos:
             # print(i)
@@ -42,85 +44,6 @@ class GetRestos:
             # # print(i['formatted_address'])
             # print(i['geometry']['location']['lat'])
             # print(i['geometry']['location']['lng'])
-            populatedb.delay('googlemaps',restos, i['name'], i['formatted_address'],'', i['geometry']['location']['lat'],i['geometry']['location']['lng'],i['geometry']['location']['lng'])
+            task=populatedb.delay('googlemaps',i, i['name'], i['formatted_address'],'', i['geometry']['location']['lat'],i['geometry']['location']['lng'])
+            print(task.AsyncResult(task.request.id).state)
         return lst 
-
-
-
-    # populatedb.delay(loc, loc['name'], loc['location']['address'],loc['location']['city'], loc['location']['latitude'],loc['location']['longitude'])
-    # pass
-    # return lst
-
-    # if location['has_total']>=1:
-    # 	found=location['location_suggestions'][0]['title']
-    # if QUERY!=found or location['has_total']==0:
-    # url='https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+{}&key={}'
-    # r=requests.get(url.format(QUERY,settings.GOOGLE_MAP_API_KEY))
-    # restos=r.json()['results']
-    # for i in restos:
-    # 	print(i)
-    # print(i['name'])
-    # print(i['formatted_address'])
-    # print(i['geometry']['location'])
-    # print(i)
-    # else:
-    # lst=[]
-# start=0
-# for i in range(20,101,20):
-# 	# print("sdcd",i)
-# 	x=GetRestos.searchapi("Gwalior",start,i)
-# 	print(x)
-# 	print(start,i)
-# 	start=i
-
-
-# print(len(set(x)))
-# import requests
-# from django.contrib.gis.geos import Point
-# from django.conf import settings
-# # pnt = Point(5, 23)
-# class GetRestos:
-# 	def searchapi(QUERY):
-# 		EP = 'https://developers.zomato.com/api/v2.1/{}' # endpoint for Zomato
-# 		HEADER = {'user-key': "ec7629c2b4cd5c106bb63c6c15aded06"}
-# 		r = requests.get(EP.format('categories'), headers=HEADER)
-# 		categories = r.json()
-# 		# print(categories)
-# 		r = requests.get(EP.format('cities'), headers=HEADER, params={'q': QUERY})
-# 		# print(r)
-# 		location = r.json()
-# 		print(location)
-# 		if len(location['location_suggestions'])!= 0:
-# 			# print(QUERY in location['location_suggestions'][0]['title'])
-# 			# print(location['location_suggestions'][0]['title'])
-# 			found=''
-# 			# if location['has_total']>=1:
-# 			# 	found=location['location_suggestions'][0]['title']
-
-# 			# else:
-# 			for i in categories['categories']:
-# 				# print("it is i"+i)
-# 				for l in location['location_suggestions']:
-# 					param = {'entity_id': l['entity_id'],'entity_type': l['entity_type'],'category': i['categories']['id']}
-# 					r = requests.get(EP.format('search'), headers=HEADER, params=param)
-# 					rest = r.json()
-# 					print(rest)
-
-# 					for loc in rest['restaurants']:
-# 						# loc = loc['restaurant']
-# 						# print(loc)
-# 						pass
-# 		else:
-# 			print("alalalalalal")
-# 			# if QUERY!=found or location['has_total']==0:
-# 			url='https://maps.googleapis.com/maps/api/place/textsearch/json?query=restaurants+in+{}&key={}'
-# 			r=requests.get(url.format(QUERY,"AIzaSyAz0lOpBpL_AwqSHDVfPepRpaBG9-4u5Jg"))
-# 			restos=r.json()['results']
-# 			for i in restos:
-# 				print(i['name'])
-# 				print(i['formatted_address'])
-# 				print(i['geometry']['location'])
-# 				print(i)
-
-
-# # GetRestos.searchapi("Guna")
