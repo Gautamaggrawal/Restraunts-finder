@@ -19,10 +19,8 @@
     <script src = "https://storage.googleapis.com/code.getmdl.io/1.0.6/material.min.js">
     </script>
     <link rel = "stylesheet" href = "https://fonts.googleapis.com/icon?family=Material+Icons">
-    <title>Simple example
-    </title>
+    <title>Locate</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <script>
       function getLocation() {
         showMap(28.6562,77.2410,5000);
@@ -56,10 +54,6 @@
           enableAutocomplete: true,
           onchanged: function (currentLocation, radius, isMarkerDropped) {
             console.log("Location changed. New location (" + currentLocation.latitude + ", " + currentLocation.longitude + ")");
-            if (currentLocation.latitude== null || currentLocation.longitude== null){
-              currentLocation.latitude=28.6562
-              currentLocation.longitude=77.2410
-            }
             user_lat.value = currentLocation.latitude;
             user_long.value = currentLocation.longitude;
             city="muzaffarnagar";
@@ -68,7 +62,7 @@
                                 );
       }
       function cityup(){
-        
+
         document.getElementById("city").value = document.getElementById("pac-input").value;
 
       }
@@ -113,13 +107,27 @@
     </script>
   </head>
   <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">FindUs</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Search <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/loc/">locate</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<br>
     <div class="container">
       <div class="row">
         <div class="col">
-          <center>
-            <h1>Restraunranst foiner
-            </h1>
-          </center>
           <div class="feedback alert alert-danger text-center text-capitalize">please enter city
           </div>
           <div class="input-group">

@@ -90,7 +90,8 @@ def search(request):
         print("exists karta hai ya nahi",models.Restaurant.objects.filter(city__icontains=city).exists())
 
         if models.Restaurant.objects.filter(city__icontains=city).exists()==False:
-            if Validate.Zomotocity(city,country)==True:
+            print("kya huaaaaaaa",Validate.Zomotocity(city,country))
+            if Validate.Zomotocity(city,country)==True:            
                 GetRestos.searchzomapi(city)
             else:
                 GetRestos.searchgoogleapi(city)
@@ -103,18 +104,19 @@ def search(request):
         # restos = models.Restaurant.objects.filter(location__distance_lte=(point, measure.D(m=radius))).values()
         # print("res",restos)
 
-        restos_details=list(restos.values("name",'data','address'))
+        print(restos.count())
 
         lst=[]
         for i in restos:
             if i.website=="zomato":
+                image=i.data.get('thumb')
                 rating=i.data.get("user_rating")['aggregate_rating']
             if i.website=="googlemaps":
-                # print(i.data)
+                image=""
                 rating=i.data.get("rating")
-            lst.append({"rating":rating,"address":i.address,"name":i.name,"latitude":i.location.x,"longitude":i.location.y})
+            lst.append({"image":image,"rating":rating,"address":i.address,"name":i.name,"latitude":i.location.x,"longitude":i.location.y})
 
-        return render(request,'Map.html',{ 'upload_response': lst,"details":restos_details,"lat":lat,"lon":lng,"city":city,"radius":radius})
+        return render(request,'Map.html',{"count":restos.count(),'upload_response': lst,"lat":lat,"lon":lng,"city":city,"radius":radius})
 
 
 def maos(request):

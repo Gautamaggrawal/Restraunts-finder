@@ -11,7 +11,7 @@
 	<title>Restos</title>
   <style type="text/css">
     .list-group{
-    max-height: 530px;
+    max-height: 400px;
     margin-bottom: 10px;
     overflow:scroll;
     -webkit-overflow-scrolling: touch;
@@ -21,16 +21,34 @@
 
 </head>
 <body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">FindUs</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Search <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/loc/">locate</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+
+<div id="warning" class="feedback alert alert-danger text-center text-capitalize" style="visibility:hidden;">Try For shorter Distance or Reload the page!</div>
+
 	<div class="container-fluid">
   <center><h1> Restaurants  in {{city}}</h1></center>
   <p>All restaurants in {{city}} in the radius of {{radius}} meters</p>
   <div class="row">
     <div class="col-sm-3 col-md-6 col-lg-4">
-
-
-      <div class="panel panel-primary" id="result_panel">
-    <div class="panel-heading"><h3 class="panel-title">Result List</h3>
-    </div>
+      <div class="panel panel-primary" id="result_panel">    
     <div class="panel-body">
         <ul class="list-group">
           {% for i in upload_response%}
@@ -38,9 +56,8 @@
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{i.name}}</h5>
       <small>{{i.rating}}</small>
-    </div>
+    </div>  
     <p class="mb-1">{{i.address}}</p>
-    <small>Donec id elit non mi porta.</small>
   </a>
   {% endfor %}
         </ul>
@@ -49,7 +66,7 @@
 
     </div>
     <div class="col-sm-9 col-md-6 col-lg-8">
-<div id="googleMap" style="height:560px;width:100%"></div>
+<div id="googleMap" style="height:400px;width:100%"></div>
     </div>
   </div>
 </div>
@@ -58,9 +75,16 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAz0lOpBpL_AwqSHDVfPepRpaBG9-4u5Jg"></script>
 
 <script type="text/javascript">
+  var count="{{count}}"
+  console.log(count)
+  if (count==0){
+    document.getElementById("warning").style.visibility = "Visible";
+  }
+
   var schools = [];
   {% for i in upload_response%}
-  var restoname="{{i.name}}"
+  var restoname="{{i.name}}"+" {{i.rating}} "  
+  var rating="{{i.rating}}"
 
   schools.push([restoname,{{i.latitude}},{{i.longitude}}])
   

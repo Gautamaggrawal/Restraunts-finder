@@ -36,14 +36,17 @@ class GetRestos:
         lst=[]
         restos=r.json()['results']
         # print(restos)
-        print(restos)
+        # print(restos)
         lst.append(restos)
         for i in restos:
-            # print(i)
-            # # print(i['name'])
-            # # print(i['formatted_address'])
-            # print(i['geometry']['location']['lat'])
-            # print(i['geometry']['location']['lng'])
             task=populatedb.delay('googlemaps',i, i['name'], i['formatted_address'],'', i['geometry']['location']['lat'],i['geometry']['location']['lng'])
-            print(task.AsyncResult(task.request.id).state)
+            # result = AsyncResult(task)
+            # res = AsyncResult(task.task_id)
+            # result = AsyncResult(task.task_id)
+            # print(result.get())
+            # print(res.status,res,res.status)
+            # print(res)
+
+
+            # print(AsyncResult(task.request.id).state)
         return lst 
