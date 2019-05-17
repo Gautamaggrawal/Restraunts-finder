@@ -67,3 +67,6 @@ Follow the given link to make a successful and valid PR: https://help.github.com
 
 For any doubts related to the issues, i.e., to understand the issue better etc, comment down your queries on the respective issue.
 
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
