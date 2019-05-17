@@ -10,6 +10,15 @@
 * Locate Nearby Restaurants
 * Calculate the distance from your location to the desired location 
 
+## Introduction
+*Restaurants Finder helps you decide where to have eat food by  picking a restaurant in your area. Open the website and desired location to get a random restaurant nearby. Press on the walking distance information at the bottom to open the location in Google Maps, or tap the refresh button at the top right to get another suggestion.
+
+## Technology
+*The web app is build with GeoDjango. Styles are written in plain CSS and Bootstrap.Restaurants searches are powered with infinte scroll and AJAX to make provide Good User Experience 
+The site is hosted on AWS and deployed with Gunicorn and Ngnix.
+
+*In order to get restaurant details Zomato  and Google Maps APIs  are used and to get the restraunts near a place Geospatial is used that gets stored in database in Background when user searches any city.The background task are accomplished by a Task Queue and Message Broker i.e CELERY and REDIS
+
 http://restosfinder.ml
 
 ## Installation
@@ -30,6 +39,14 @@ install binutils libproj-dev
 3. `git clone https://github.com/Gautamaggrawal/Restraunts-finder.git`
 4. Install the requirements `pip install -r requirements.txt`
 5. Finally, run the development server `python manage.py runserver`
+
+### Secret Key
+
+Create and activate the Google Maps JavaScript API, which generates a API key. Copy this key in ```settings.py``` file in place of google-app-secret-key .
+
+```GOOGLE_MAP_API_KEY = "google-app-secret-key"```
+```ZOMATO_API_KEY = "zomato-secret-key"```
+
 
 The project will be available at **127.0.0.1:8000**.
 
