@@ -5,19 +5,19 @@
 [![Django Version](https://img.shields.io/badge/django-2.2-brightgreen.svg)](https://djangoproject.com)
 [![PEP8](https://img.shields.io/badge/code%20style-pep8-orange.svg)](https://www.python.org/dev/peps/pep-0008/)
 
-**Functionality:**
+## Functionality:
 * Searches Restaurants in notime
 * Locate Nearby Restaurants
 * Calculate the distance from your location to the desired location 
 
 ## Introduction
-*Restaurants Finder helps you decide where to have eat food by  picking a restaurant in your area. Open the website and desired location to get a random restaurant nearby. Press on the walking distance information at the bottom to open the location in Google Maps, or tap the refresh button at the top right to get another suggestion.
+**Restaurants Finder helps you decide where to have eat food by  picking a restaurant in your area. Open the website and desired location to get a random restaurant nearby. Press on the walking distance information at the bottom to open the location in Google Maps, or tap the refresh button at the top right to get another suggestion.**
 
 ## Technology
-*The web app is build with GeoDjango. Styles are written in plain CSS and Bootstrap.Restaurants searches are powered with infinte scroll and AJAX to make provide Good User Experience 
-The site is hosted on AWS and deployed with Gunicorn and Ngnix.
+**The web app is build with GeoDjango. Styles are written in plain CSS and Bootstrap.Restaurants searches are powered with infinte scroll and AJAX to make provide Good User Experience 
+The site is hosted on AWS and deployed with Gunicorn and Ngnix.**
 
-*In order to get restaurant details Zomato  and Google Maps APIs  are used and to get the restraunts near a place Geospatial is used that gets stored in database in Background when user searches any city.The background task are accomplished by a Task Queue and Message Broker i.e CELERY and REDIS
+**In order to get restaurant details Zomato  and Google Maps APIs  are used and to get the restraunts near a place Geospatial is used that gets stored in database in Background when user searches any city.The background task are accomplished by a Task Queue and Message Broker i.e CELERY and REDIS.**
 
 http://restosfinder.ml
 
